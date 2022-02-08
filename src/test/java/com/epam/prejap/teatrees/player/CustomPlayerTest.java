@@ -7,22 +7,17 @@ import org.testng.annotations.Test;
 
 import java.util.Optional;
 
-import static org.testng.AssertJUnit.assertEquals;
+import static org.testng.Assert.assertEquals;
 
-/**
- * @author Maciej Drobot
- */
 public class CustomPlayerTest {
 
 	@Test(dataProvider = "input")
 	public void nextReturnCorrectMove(char input, Optional<Move> expected) {
 		// given
-		GameConfig config = new GameConfig('l', 'r', 'n');
+		GameConfig config = new GameConfig('n', 'l', 'r');
 		CustomPlayer player = new CustomPlayer(config);
-
 		// when
 		var actual = player.nextMove(input);
-
 		// then
 		assertEquals(actual, expected);
 	}

@@ -1,81 +1,58 @@
 package com.epam.prejap.teatrees.game;
 
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 
 /**
+ * Generates game configuration based on provided command line options.
+ * In case of no options provided returns default values.
+ *
  * @author Maciej Drobot
  */
 class ConfigGeneratorCMD {
 
-	private final Option NONE =
-			new Option("n", "none", true, "Key for NONE move.");
-	private final Option LEFT =
-			new Option("l", "left", true, "Key for LEFT move.");
-	private final Option RIGHT =
-			new Option("r", "right", true, "Key for RIGHT move.");
-	private Options options;
-
 	private CommandLine cmd;
 	private CommandLineParser parser;
 
-	{
-		options = new Options();
-		options.addOption(NONE);
-		options.addOption(LEFT);
-		options.addOption(RIGHT);
+	ConfigGeneratorCMD(CommandLineParser parser) {
+		this.parser = parser;
 	}
 
-	ConfigGeneratorCMD() {
-		this.parser = new BasicParser();
-	}
-
+	/**
+	 * Returns game configuration.
+	 *
+	 * @param args
+	 * @return GameConfig
+	 */
 	public GameConfig getConfigFromCommandLine(String[] args) {
 		var config = new GameConfig(
-				getLeftKey(args),
-				getRightKey(args),
-				getNoneKey(args));
+				getKey(args, 'n',' '),
+				getKey(args, 'l','h'),
+				getKey(args, 'r','l'));
 		return config;
 	}
 
-	private char getNoneKey(String[] args) {
-		char moveNone = ' ';
+	private char getKey(String[] args, char option, char defaultKey) {
+		var options = generateOptions();
 		try {
 			cmd = parser.parse(options, args);
-			if(cmd.hasOption("n")) {
-				moveNone = cmd.getOptionValue("n").charAt(0);
+			if(cmd.hasOption(option)) {
+				defaultKey = cmd.getOptionValue(option).charAt(0);
 			}
 		} catch (ParseException e) {
 			System.err.println(e.getMessage());
 		} finally {
-			return moveNone;
+			return defaultKey;
 		}
 	}
 
-	private char getLeftKey(String[] args) {
-		char moveLeft = 'h';
-		try {
-			cmd = parser.parse(options, args);
-			if(cmd.hasOption("l")) {
-				moveLeft = cmd.getOptionValue("l").charAt(0);
-			}
-		} catch (ParseException e) {
-			System.err.println(e.getMessage());
-		} finally {
-			return moveLeft;
-		}
-	}
-
-	private char getRightKey(String[] args) {
-		char moveRight = 'l';
-		try {
-			cmd = parser.parse(options, args);
-			if (cmd.hasOption("r")) {
-				moveRight = cmd.getOptionValue("r").charAt(0);
-			}
-		} catch (ParseException e) {
-			System.err.println(e.getMessage());
-		} finally {
-			return moveRight;
-		}
+	private Options generateOptions() {
+		var options = new Options();
+		options.addOption(OptionsCMD.NONE.returnOption());
+		options.addOption(OptionsCMD.LEFT.returnOption());
+		options.addOption(OptionsCMD.RIGHT.returnOption());
+		return options;
 	}
 }

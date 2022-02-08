@@ -1,48 +1,46 @@
 package com.epam.prejap.teatrees.game;
 
+import org.apache.commons.cli.BasicParser;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-/**
- * @author Maciej Drobot
- */
 public class ConfigGeneratorCMDTest {
 
-	private final ConfigGeneratorCMD configGenerator = new ConfigGeneratorCMD();
+	private ConfigGeneratorCMD configGenerator;
+
+	@BeforeTest
+	public void setup() {
+		configGenerator = new ConfigGeneratorCMD(new BasicParser());
+	}
 
 	@Test(dataProvider = "argsNoneMove")
 	public void shouldCreateConfigWithCorrectNoneKey(String[] args, char expected) {
 		// given
-
 		// when
 		var config = configGenerator.getConfigFromCommandLine(args);
-
 		// then
-		assertEquals(config.noneKey, expected);
+		assertEquals(config.moveNone(), expected);
 	}
 
 	@Test(dataProvider = "argsLeftMove")
 	public void shouldCreateConfigWithCorrectLeftKey(String[] args, char expected) {
 		// given
-
 		// when
 		var config = configGenerator.getConfigFromCommandLine(args);
-
 		// then
-		assertEquals(config.leftKey, expected);
+		assertEquals(config.moveLeft(), expected);
 	}
 
 	@Test(dataProvider = "argsRightMove")
 	public void shouldCreateConfigWithCorrectRightKey(String[] args, char expected) {
 		// given
-
 		// when
 		var config = configGenerator.getConfigFromCommandLine(args);
-
 		// then
-		assertEquals(config.rightKey, expected);
+		assertEquals(expected, config.moveRight());
 	}
 
 	@DataProvider(name = "argsNoneMove")
@@ -104,5 +102,4 @@ public class ConfigGeneratorCMDTest {
 				{args6, 'l'},
 		};
 	}
-
 }

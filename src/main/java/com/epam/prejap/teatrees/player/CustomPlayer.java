@@ -6,19 +6,22 @@ import com.epam.prejap.teatrees.game.Move;
 import java.util.Optional;
 
 /**
+ * Implementation of Player with overloaded nextMove() method.
+ * Overloaded method allows using input.
+ * Initialized with game config - allowing for customized navigation.
  *
  * @author Maciej Drobot
  */
 public class CustomPlayer implements Player {
 
-	public char leftKey;
-	public char rightKey;
-	public char noneKey;
+	private char leftKey;
+	private char rightKey;
+	private char noneKey;
 
 	public CustomPlayer(GameConfig gameConfig) {
-		this.leftKey = gameConfig.leftKey;
-		this.rightKey = gameConfig.rightKey;
-		this.noneKey = gameConfig.noneKey;
+		this.leftKey = gameConfig.moveLeft();
+		this.rightKey = gameConfig.moveRight();
+		this.noneKey = gameConfig.moveNone();
 	}
 
 	@Override
@@ -26,13 +29,19 @@ public class CustomPlayer implements Player {
 		return Optional.of(Move.NONE);
 	}
 
+	/**
+	 * Returns Optional of Move depending on the input.
+	 *
+	 * @param key
+	 * @return Optional of Move
+	 */
 	public Optional<Move> nextMove(char key) {
 		if (key == leftKey) {
 			return Optional.of(Move.LEFT);
 		} else if (key == rightKey) {
 			return Optional.of(Move.RIGHT);
 		} else {
-			return Optional.of(Move.NONE);
+			return nextMove();
 		}
 	}
 }

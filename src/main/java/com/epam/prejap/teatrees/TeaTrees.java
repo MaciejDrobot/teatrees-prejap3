@@ -1,16 +1,14 @@
 package com.epam.prejap.teatrees;
 
+import com.epam.prejap.teatrees.block.BlockFeed;
+import com.epam.prejap.teatrees.game.*;
 import com.epam.prejap.teatrees.pause.Pause;
 import com.epam.prejap.teatrees.pause.PauseMonitor;
-import com.epam.prejap.teatrees.block.BlockFeed;
-import com.epam.prejap.teatrees.game.Move;
-import com.epam.prejap.teatrees.game.Playfield;
-import com.epam.prejap.teatrees.game.Printer;
-import com.epam.prejap.teatrees.game.Waiter;
+import com.epam.prejap.teatrees.player.CustomPlayer;
 import com.epam.prejap.teatrees.player.Player;
-import com.epam.prejap.teatrees.player.RandomPlayer;
+import org.apache.commons.cli.BasicParser;
+
 import java.io.InputStreamReader;
-import java.util.Random;
 
 class TeaTrees {
 
@@ -57,7 +55,8 @@ class TeaTrees {
         var printer = new Printer(System.out);
         var playfield = new Playfield(rows, cols, feed, printer);
         var waiter = new Waiter(0);
-        var game = new TeaTrees(playfield, new Waiter(delay), new RandomPlayer(new Random()),
+        var configuration = new ConfigGenerator(new BasicParser(), System.err).getConfigFromCommandLine(args);
+        var game = new TeaTrees(playfield, new Waiter(delay), new CustomPlayer(configuration),
                 new PauseMonitor(new InputStreamReader(System.in), new Pause(waiter)));
 
         var score = game.play();

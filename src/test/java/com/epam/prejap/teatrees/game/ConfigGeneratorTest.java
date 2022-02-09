@@ -7,13 +7,13 @@ import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
 
-public class ConfigGeneratorCMDTest {
+public class ConfigGeneratorTest {
 
-	private ConfigGeneratorCMD configGenerator;
+	private ConfigGenerator configGenerator;
 
 	@BeforeTest
 	public void setup() {
-		configGenerator = new ConfigGeneratorCMD(new BasicParser());
+		configGenerator = new ConfigGenerator(new BasicParser(), System.err);
 	}
 
 	@Test(dataProvider = "argsNoneMove")

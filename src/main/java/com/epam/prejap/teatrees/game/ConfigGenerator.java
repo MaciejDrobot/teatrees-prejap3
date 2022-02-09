@@ -2,8 +2,9 @@ package com.epam.prejap.teatrees.game;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
-import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
+import java.io.PrintStream;
 
 /**
  * Generates game configuration based on provided command line options.
@@ -11,13 +12,15 @@ import org.apache.commons.cli.ParseException;
  *
  * @author Maciej Drobot
  */
-class ConfigGeneratorCMD {
+public class ConfigGenerator {
 
 	private CommandLine cmd;
 	private CommandLineParser parser;
+	private final Printer printer;
 
-	ConfigGeneratorCMD(CommandLineParser parser) {
+	public ConfigGenerator(CommandLineParser parser, PrintStream out) {
 		this.parser = parser;
+		this.printer = new Printer(out);
 	}
 
 	/**
@@ -42,17 +45,16 @@ class ConfigGeneratorCMD {
 				defaultKey = cmd.getOptionValue(option).charAt(0);
 			}
 		} catch (ParseException e) {
-			System.err.println(e.getMessage());
-		} finally {
-			return defaultKey;
+			printer.out.println(e.getMessage());
 		}
+		return defaultKey;
 	}
 
-	private Options generateOptions() {
-		var options = new Options();
-		options.addOption(OptionsCMD.NONE.returnOption());
-		options.addOption(OptionsCMD.LEFT.returnOption());
-		options.addOption(OptionsCMD.RIGHT.returnOption());
+	private org.apache.commons.cli.Options generateOptions() {
+		var options = new org.apache.commons.cli.Options();
+		options.addOption(Options.NONE.returnOption());
+		options.addOption(Options.LEFT.returnOption());
+		options.addOption(Options.RIGHT.returnOption());
 		return options;
 	}
 }

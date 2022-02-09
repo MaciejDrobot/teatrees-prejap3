@@ -16,12 +16,14 @@
             </run>
         </groups>
         <classes>
+            <class name="com.epam.prejap.teatrees.block.BrickActionTest"/>
             <class name="com.epam.prejap.teatrees.block.ZBlockTest"/>
             <class name="com.epam.prejap.teatrees.block.YBlockTest"/>
             <class name="com.epam.prejap.teatrees.block.RotatedBlock"/>
             <class name="com.epam.prejap.teatrees.block.SBlockTest"/>
             <class name="com.epam.prejap.teatrees.block.HBlockTest"/>
             <class name="com.epam.prejap.teatrees.block.LBlockTest"/>
+            <class name="com.epam.prejap.teatrees.game.BlockShadowTest"/>
             <class name="com.epam.prejap.teatrees.game.WaiterTest"/>
             <class name="com.epam.prejap.teatrees.game.GridTest"/>
             <class name="com.epam.prejap.teatrees.game.PlayfieldTest"/>

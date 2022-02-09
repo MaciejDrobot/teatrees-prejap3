@@ -9,7 +9,6 @@ import java.util.Arrays;
  * @author Piotr Chowaniec
  */
 class Grid {
-
     private final byte[][] grid;
 
     Grid(byte[][] grid) {
@@ -81,6 +80,16 @@ class Grid {
      */
     void cleanCell(int row, int col) {
         grid[row][col] = 0;
+    }
+
+    /**
+     * Sets element with given indexes to representation of {@link BrickRepresentation#SHADOW}.
+     *
+     * @param row first index of element.
+     * @param col second index of element.
+     */
+    void shadowCell(int row, int col) {
+        grid[row][col] = BrickRepresentation.SHADOW.asByte();
     }
 
     /**

@@ -27,6 +27,23 @@ public abstract class Block {
         }
     }
 
+    /**
+     * Iterates over all rows and columns and calls action for every brick
+     * @param   action
+     *          {@link BrickAction} to be called for each brick in block
+     * @see com.epam.prejap.teatrees.block.BrickAction
+     */
+    public void forEachBrick(BrickAction action) {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                var dot = image[i][j];
+                if (dot > 0) {
+                    action.act(i, j, dot);
+                }
+            }
+        }
+    }
+
     public int rows() {
         return rows;
     }

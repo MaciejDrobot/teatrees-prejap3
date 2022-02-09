@@ -1,23 +1,25 @@
 package com.epam.prejap.teatrees.game;
 
 import com.epam.prejap.teatrees.block.Block;
-import com.epam.prejap.teatrees.block.BlockFeed;
+import java.util.function.Supplier;
+
+import com.epam.prejap.teatrees.block.BlockSupplier;
 import com.epam.prejap.teatrees.block.RotatedBlock;
 
 public class Playfield {
-
     private final int rows;
     private final int cols;
     private final Printer printer;
-    private final BlockFeed feed;
+    private final BlockSupplier feed;
 
     final Grid grid;
     Block block;
     int row;
+    int rowShadow;
     int col;
     private Block hintBlock;
 
-    public Playfield(int rows, int cols, BlockFeed feed, Printer printer) {
+    public Playfield(int rows, int cols, BlockSupplier feed, Printer printer) {
         this.rows = rows;
         this.cols = cols;
         this.feed = feed;
@@ -36,6 +38,7 @@ public class Playfield {
         hintBlock = feed.nextBlock();
         row = 0;
         col = (cols - block.cols()) / 2;
+        rowShadow = calculateShadowRow(row);
         show();
     }
 
@@ -91,8 +94,10 @@ public class Playfield {
 
     private void rotate() {
         Block rotated = new RotatedBlock(block);
-        if (isValidMove(rotated, 0, 0))
+        if (isValidMove(rotated, 0, 0)) {
             block = rotated;
+            rowShadow = calculateShadowRow(row);
+        }
     }
 
     private boolean isValidMove(Block block, int rowOffset, int colOffset) {
@@ -102,7 +107,9 @@ public class Playfield {
                 if (dot > 0) {
                     int newRow = row + i + rowOffset;
                     int newCol = col + j + colOffset;
-                    if (newRow >= rows || newCol >= cols || !grid.isCellEmpty(newRow, newCol)) {
+                    boolean isRowValid = 0 <= newRow && newRow < rows;
+                    boolean isColValid = 0 <= newCol && newCol < cols;
+                    if (!isRowValid || !isColValid || !grid.isCellEmpty(newRow, newCol)) {
                         return false;
                     }
                 }
@@ -112,31 +119,27 @@ public class Playfield {
     }
 
     private void hide() {
-        forEachBrick((i, j, dot) -> grid.cleanCell(row + i, col + j));
+        block.forEachBrick((i, j, dot) -> grid.cleanCell(rowShadow + i, col + j));
+        block.forEachBrick((i, j, dot) -> grid.cleanCell(row + i, col + j));
     }
 
     private void show() {
-        forEachBrick((i, j, dot) -> grid.fillCell(row + i, col + j, dot));
+        block.forEachBrick((i, j, dot) -> grid.shadowCell(rowShadow + i, col + j));
+        block.forEachBrick((i, j, dot) -> grid.fillCell(row + i, col + j, dot));
         printer.draw(grid.getGrid(), hintBlock);
     }
 
     private void doMove(int rowOffset, int colOffset) {
         row += rowOffset;
         col += colOffset;
+        rowShadow = calculateShadowRow(row);
     }
 
-    private void forEachBrick(BrickAction action) {
-        for (int i = 0; i < block.rows(); i++) {
-            for (int j = 0; j < block.cols(); j++) {
-                var dot = block.dotAt(i, j);
-                if (dot > 0) {
-                    action.act(i, j, dot);
-                }
-            }
+    private int calculateShadowRow(int originalRow) {
+        int result = originalRow;
+        while(isValidMove(block, result - originalRow + 1, 0)) {
+            ++result;
         }
-    }
-
-    private interface BrickAction {
-        void act(int i, int j, byte dot);
+        return result;
     }
 }

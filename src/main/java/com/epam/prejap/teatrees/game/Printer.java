@@ -54,8 +54,8 @@ public class Printer {
         out.print("\u001b[2J\u001b[H");
     }
 
-    private void print(byte dot) {
-        out.format(dot == 0 ? " " :"#");
+    void print(byte dot) {
+        out.format("%c", BrickRepresentation.fromDot(dot).asByte());
     }
 
     private void startRow() {

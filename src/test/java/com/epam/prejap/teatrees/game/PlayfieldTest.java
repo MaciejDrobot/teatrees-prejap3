@@ -46,8 +46,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 1;
-        playfield.col   = 1;
+        playfield.row = 1;
+        playfield.rowShadow = 3;
+        playfield.col = 1;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -56,6 +57,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertTrue(movedDown);
         sa.assertEquals(playfield.row, 2);
+        sa.assertEquals(playfield.rowShadow, 2);
         sa.assertEquals(playfield.col, 1);
         sa.assertTrue(playfield.block instanceof RotatedBlock);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -80,8 +82,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 2;
-        playfield.col   = 1;
+        playfield.row = 2;
+        playfield.rowShadow = 3;
+        playfield.col = 1;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -90,6 +93,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertFalse(movedDown);
         sa.assertEquals(playfield.row, 2);
+        sa.assertEquals(playfield.rowShadow, 2);
         sa.assertEquals(playfield.col, 1);
         sa.assertTrue(playfield.block instanceof RotatedBlock);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -107,15 +111,16 @@ public class PlayfieldTest {
         var expectedGrid  = new Grid(new byte[][]{{0, 0, 0, 0, 0},
                                                   {0, 1, 0, 0, 0},
                                                   {1, 1, 0, 0, 0},
-                                                  {1, 0, 0, 0, 0},
-                                                  {0, 0, 0, 0, 0}});
+                                                  {1, '.', 0, 0, 0},
+                                                  {'.', 0, 0, 0, 0}});
 
         Block block = mockedZBlock();
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 0;
-        playfield.col   = 0;
+        playfield.row = 0;
+        playfield.rowShadow = 3;
+        playfield.col = 0;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -124,6 +129,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertTrue(movedDown);
         sa.assertEquals(playfield.row, 1);
+        sa.assertEquals(playfield.rowShadow, 2);
         sa.assertEquals(playfield.col, 0);
         sa.assertTrue(playfield.block instanceof RotatedBlock);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -148,8 +154,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 1;
-        playfield.col   = 1;
+        playfield.row = 1;
+        playfield.rowShadow = 1;
+        playfield.col = 1;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -158,6 +165,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertFalse(movedDown);
         sa.assertEquals(playfield.row, 1);
+        sa.assertEquals(playfield.rowShadow, 1);
         sa.assertEquals(playfield.col, 1);
         sa.assertTrue(playfield.block instanceof RotatedBlock);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -182,8 +190,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 3;
-        playfield.col   = 1;
+        playfield.row = 3;
+        playfield.rowShadow = 3;
+        playfield.col = 1;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -192,6 +201,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertFalse(movedDown);
         sa.assertEquals(playfield.row, 3);
+        sa.assertEquals(playfield.rowShadow, 3);
         sa.assertEquals(playfield.col, 1);
         sa.assertSame(playfield.block, block);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -216,8 +226,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 1;
-        playfield.col   = 3;
+        playfield.row = 1;
+        playfield.rowShadow = 2;
+        playfield.col = 3;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -226,6 +237,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertTrue(movedDown);
         sa.assertEquals(playfield.row, 2);
+        sa.assertEquals(playfield.rowShadow, 2);
         sa.assertEquals(playfield.col, 3);
         sa.assertSame(playfield.block, block);
         sa.assertEquals(playfield.grid, expectedGrid);
@@ -250,8 +262,9 @@ public class PlayfieldTest {
 
         Playfield playfield = createPlayfield(playfieldGrid);
         playfield.block = block;
-        playfield.row   = 1;
-        playfield.col   = 1;
+        playfield.row = 1;
+        playfield.rowShadow = 1;
+        playfield.col = 1;
 
         // when
         boolean movedDown = playfield.move(Move.UP);
@@ -260,6 +273,7 @@ public class PlayfieldTest {
         SoftAssert sa = new SoftAssert();
         sa.assertFalse(movedDown);
         sa.assertEquals(playfield.row, 1);
+        sa.assertEquals(playfield.rowShadow, 1);
         sa.assertEquals(playfield.col, 1);
         sa.assertSame(playfield.block, block);
         sa.assertEquals(playfield.grid, expectedGrid);
